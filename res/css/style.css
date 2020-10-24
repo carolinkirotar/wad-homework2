@@ -190,7 +190,7 @@ nav div.avatar-container {
     background-size: 15px;
     background-repeat: no-repeat;
     background-position: 5px center;
-    background-color: #8a8a8a;
+    background-color: #01579b;
     width: 60px;
     height: 25px;
     padding-left: 23px;
@@ -199,9 +199,6 @@ nav div.avatar-container {
     border: none;
 }
 
-.like-button.liked {
-    background-color: #01579b;
-}
 
 #information-container {
     display: none;
@@ -229,7 +226,7 @@ hr {
     margin-left: -37px;
 }
 
-.profiles {
+.profile {
     display: grid;
     grid-template-columns: auto auto;
     padding: 15px;
@@ -252,11 +249,6 @@ hr {
     margin: 5px;
 }
 
-p {
-    font-size: 16px;
-    margin: 10px;
-    font-weight: bold;
-}
 
 .follow {
     padding: 12px 22px;
