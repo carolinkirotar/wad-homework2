@@ -30,6 +30,14 @@ $(function () {
             alert('Error loading profiles info')
         });
 
+    loadPostInfo()
+        .then(function (post) {
+            displayPostInfo(post)
+        })
+        .catch(function () {
+            alert('Error loading post info')
+        });
+
 });
 
 function displayProfilesInfo(profiles){
@@ -52,6 +60,11 @@ function displayUserInfo(user) {
     $('.avatar-container .avatar').attr('src', user.avatar)
 }
 
+function displayPostInfo(post) {
+    $('. #').text()
+
+}
+
 function loadUserInfo() {
     return $.get (
         {
@@ -67,7 +80,7 @@ function loadUserInfo() {
 }
 
 function loadProfilesInfo() {
-    return $.get (
+    return $.get(
         {
             url: 'https://private-anon-118a285ef7-wad20postit.apiary-mock.com/profiles',
             success: function (response) {
@@ -78,5 +91,18 @@ function loadProfilesInfo() {
             }
         }
     );
+}
 
+function loadPostInfo() {
+        return $.get (
+            {
+                url: 'https://private-anon-22c2470044-wad20postit.apiary-mock.com/posts',
+                success: function (response) {
+                    return response;
+                },
+                error: function () {
+                    alert('error')
+                }
+            }
+        );
 }
