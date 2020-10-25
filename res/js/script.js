@@ -1,19 +1,9 @@
 let profiles = null;
-
+let posts = null;
 $(function () {
-
     $('.avatar-container').click(function () {
         $('#information-container').toggle();
     })
-
-    $(".follow").click(function(){
-        $(this).css("background-color","grey");
-    });
-
-    $(".like-button").click(function(){
-        $(this).css("background-color","red");
-    });
-
     loadUserInfo()
         .then(function (user) {
             displayUserInfo(user)
@@ -21,7 +11,6 @@ $(function () {
         .catch(function () {
             alert('Error loading user info')
         });
-
     loadProfilesInfo()
         .then(function (profiles) {
             displayProfilesInfo(profiles);
@@ -29,42 +18,78 @@ $(function () {
         .catch(function () {
             alert('Error loading profiles info')
         });
-
-    loadPostInfo()
-        .then(function (post) {
-            displayPostInfo(post)
+    loadPostsInfo()
+        .then(function (posts) {
+            displayPostsInfo(posts)
         })
         .catch(function () {
             alert('Error loading post info')
         });
-
 });
-
 function displayProfilesInfo(profiles){
-    $('.avatar1 #name1').text(profiles[0].firstname + " " + profiles[0].lastname)
-    $('.profile #pic1').attr('src', profiles[0].avatar)
-
-    $('.avatar1 #name2').text(profiles[1].firstname + " " + profiles[1].lastname)
-    $('.profile #pic2').attr('src', profiles[1].avatar)
-
-    $('.avatar1 #name3').text(profiles[2].firstname + " " + profiles[2].lastname)
-    $('.profile #pic3').attr('src', profiles[2].avatar)
-
-    $('.avatar1 #name4').text(profiles[3].firstname + " " + profiles[3].lastname)
-    $('.profile #pic4').attr('src', profiles[3].avatar)
+    $.each(profiles, function (i, profiles){
+        let name = profiles.firstname + " " + profiles.lastname
+        let url = profiles.avatar
+        $('.profile').append(
+            '<div class="avatar1">\n' +
+            '            <img src="' + url + '" alt = "" class="profile-img" id="pic1">\n' +
+            '            <p>' + name + '</p>\n' +
+            '            <button class="follow"> Follow </button>\n' +
+            '        </div>'
+        )
+        $(".follow").click(function(){
+            $(this).css("background-color","grey");
+        });
+    })
 }
-
 function displayUserInfo(user) {
     $('.avatar-container #user-name').text(user.firstname + " " + user.lastname)
     $('.avatar-container #email').text(user.email)
     $('.avatar-container .avatar').attr('src', user.avatar)
 }
-
-function displayPostInfo(post) {
-    $('. #').text()
-
+function displayPostsInfo(posts) {
+    $.each(posts, function (i, posts){
+        let postText = ""
+        if (posts.text !== null){
+            postText = posts.text
+        }
+        let createTime = posts.createTime
+        let likes = posts.likes
+        let authorPicture = posts.author.avatar
+        let authorName = posts.author.firstname + " " + posts.author.lastname
+        let mediaUrl = ""
+        if (posts.media && posts.media.type) {
+            if (posts.media.type === 'image') {
+                mediaUrl = '<img src="' + posts.media.url + '"alt = ""'
+            }
+            if (posts.media.type === 'video') {
+                mediaUrl = '<video controls> <source src="' + posts.media.url +  '" type="video/mp4"> </video>'
+            }
+        }
+        $('.main-container').append(
+            '<div class="post">\n' +
+            '        <div class="post-author">\n' +
+            '          <span class="post-author-info">\n' +
+            '            <img src="' + authorPicture + '" alt="Post author">\n' +
+            '            <small>' + authorName + '</small>\n' +
+            '          </span>\n' +
+            '          <small>' + createTime + '</small>\n' +
+            '        </div>' +
+            '<div class="post-image">\n' + mediaUrl +
+            '        </div>\n' +
+            '        <div class="post-title">\n' +
+            '          <h3>' + postText + '</h3>\n' +
+            '        </div>\n' +
+            '        <div class="post-actions">\n' +
+            '          <button type="button" name="like" class="like-button"> ' + likes + '</button>\n' +
+            '        </div>\n' +
+            '      </div>'
+        )
+    })
+    $(".like-button").click(function(){
+        $(this).css("background-color","red");
+    })
 }
-
 function loadUserInfo() {
     return $.get (
         {
@@ -78,7 +103,6 @@ function loadUserInfo() {
         }
     );
 }
-
 function loadProfilesInfo() {
     return $.get(
         {
@@ -92,17 +116,16 @@ function loadProfilesInfo() {
         }
     );
 }
-
-function loadPostInfo() {
-        return $.get (
-            {
-                url: 'https://private-anon-22c2470044-wad20postit.apiary-mock.com/posts',
-                success: function (response) {
-                    return response;
-                },
-                error: function () {
-                    alert('error')
-                }
+function loadPostsInfo() {
+    return $.get (
+        {
+            url: 'https://private-anon-22c2470044-wad20postit.apiary-mock.com/posts',
+            success: function (response) {
+                return response;
+            },
+            error: function () {
+                alert('error')
             }
-        );
+        }
+    );
 }
